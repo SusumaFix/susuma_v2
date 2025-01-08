@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<setting name="logImpl" value="STDOUT_LOGGING" />
+        <setting name="jdbcTypeForNull" value="VARCHAR" />
+	</settings>
+
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+				<property name="username" value="SSM" />
+				<property name="password" value="SSM" />
+			</dataSource>
+		</environment>
+	</environments>
+
+	<mappers>
+		<mapper resource="mybatis/mapper/BoardMapper.xml" />
+		<mapper resource="mybatis/mapper/MemberMapper.xml" />
+		<mapper resource="mybatis/mapper/MessageMapper.xml" />
+		<mapper resource="mybatis/mapper/RequestMapper.xml" />
+		<mapper resource="mybatis/mapper/CategoryMapper.xml" />
+		<mapper resource="mybatis/mapper/ReviewMapper.xml" />
+		<mapper resource="mybatis/mapper/PointMapper.xml" />
+		<mapper resource="mybatis/mapper/AlertMapper.xml" />
+
+	</mappers>
+
+
+</configuration>
