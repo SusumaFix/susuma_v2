@@ -42,7 +42,7 @@
 								</li>
 								<li>
 									<span class="txt_num">3.</span>관계사: 회사와 제휴 관계를 맺고 수수마계정을 공동 제공하기로 합의한 법인을 말합니다. 개별 관계사는
-									<a href="https://www.susumacorp.com/susuma/subsidiaryCompany" target="_blank" class="link_policy">수수마 기업사이트</a>
+									<a href="https://www.susumacorp.com/subsidiaryCompany" target="_blank" class="link_policy">수수마 기업사이트</a>
 									에서 확인할 수 있고 추후 추가/변동될 수 있으며 관계사가 추가/변동될 때에는 수수마 기업사이트에 변경 사항을 게시합니다.
 								</li>
 								<li>

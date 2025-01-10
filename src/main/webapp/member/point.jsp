@@ -249,7 +249,7 @@
 
 	 // 출금 모달에서 확인 버튼 클릭 시
 	    document.querySelector('#withdrawModal .btn-confirm').addEventListener('click', function() {
-	        fetch('/Susuma/member/withdrawPoints.member', { // 절대 경로 사용
+	        fetch('/member/withdrawPoints.member', { 
 	            method: 'POST',
 	            headers: {
 	                'Content-Type': 'application/x-www-form-urlencoded',
@@ -295,7 +295,7 @@
 	            return;
 	        }
 
-	        fetch('/Susuma/member/chargePoints.member', { // 절대 경로 사용
+	        fetch('/member/chargePoints.member', { // 절대 경로 사용
 	            method: 'POST',
 	            headers: {
 	                'Content-Type': 'application/x-www-form-urlencoded',

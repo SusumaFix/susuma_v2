@@ -31,7 +31,7 @@ $(document).ready(function() {
 				}).done(function(data) {
 					if (data.everythings_fine) {
 						// 포인트 충전 요청
-						fetch('/Susuma/member/chargePoints.member', {
+						fetch('/member/chargePoints.member', {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/x-www-form-urlencoded',
@@ -60,7 +60,7 @@ $(document).ready(function() {
 					}
 				}).fail(function(xhr, status, error) {
 					// 포인트 충전 요청
-					fetch('/Susuma/member/chargePoints.member', {
+					fetch('/member/chargePoints.member', {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
@@ -136,7 +136,7 @@ $(document).ready(function() {
 				}).done(function(data) {
 					if (data.everythings_fine) {
 						// 포인트 충전 요청
-						fetch('/Susuma/member/chargePoints.member', {
+						fetch('/member/chargePoints.member', {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/x-www-form-urlencoded',
@@ -165,7 +165,7 @@ $(document).ready(function() {
 					}
 				}).fail(function(xhr, status, error) {
 					// 포인트 충전 요청
-					fetch('/Susuma/member/chargePoints.member', {
+					fetch('/member/chargePoints.member', {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
@@ -241,7 +241,7 @@ $(document).ready(function() {
 				}).done(function(data) {
 					if (data.everythings_fine) {
 						// 포인트 충전 요청
-						fetch('/Susuma/member/chargePoints.member', {
+						fetch('/member/chargePoints.member', {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/x-www-form-urlencoded',
@@ -270,7 +270,7 @@ $(document).ready(function() {
 					}
 				}).fail(function(xhr, status, error) {
 					// 포인트 충전 요청
-					fetch('/Susuma/member/chargePoints.member', {
+					fetch('/member/chargePoints.member', {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
@@ -347,7 +347,7 @@ $(document).ready(function() {
 				}).done(function(data) {
 					if (data.everythings_fine) {
 						// 포인트 충전 요청
-						fetch('/Susuma/member/chargePoints.member', {
+						fetch('/member/chargePoints.member', {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/x-www-form-urlencoded',
@@ -376,7 +376,7 @@ $(document).ready(function() {
 					}
 				}).fail(function(xhr, status, error) {
 					// 포인트 충전 요청
-					fetch('/Susuma/member/chargePoints.member', {
+					fetch('/member/chargePoints.member', {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',
@@ -452,7 +452,7 @@ $(document).ready(function() {
 				}).done(function(data) {
 					if (data.everythings_fine) {
 						// 포인트 충전 요청
-						fetch('/Susuma/member/chargePoints.member', {
+						fetch('/member/chargePoints.member', {
 							method: 'POST',
 							headers: {
 								'Content-Type': 'application/x-www-form-urlencoded',
@@ -481,7 +481,7 @@ $(document).ready(function() {
 					}
 				}).fail(function(xhr, status, error) {
 					// 포인트 충전 요청
-					fetch('/Susuma/member/chargePoints.member', {
+					fetch('/member/chargePoints.member', {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/x-www-form-urlencoded',

@@ -530,7 +530,7 @@
 		}
 	</script>
 	<!-- 카카오 맵 api -->
-	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=929a751836571e9de0c6b4d84f8579ce&libraries=services,clusterer&autoload=false"></script>
+	<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=929a751836571e9de0c6b4d84f8579ce&libraries=services,clusterer&autoload=false"></script>
 	<script>
 	// 위도, 경도 변수 세팅 
 	var latitude = ${ requestDTO.latitude }; // 위도(가로선) -> 높을수록 y좌표 값이 커짐

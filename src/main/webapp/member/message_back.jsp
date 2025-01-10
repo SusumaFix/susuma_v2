@@ -10,7 +10,7 @@
 	<div class="chat-container">
 		<input type="hidden" name="getMeNo" value="${getMeNo }">
 		<div class="user-info">
-			<a href="/Susuma/member/view.request?reqNo=80" class="info" target="_blank">
+			<a href="/member/view.request?reqNo=80" class="info" target="_blank">
 				<div class="name">
 					${userDTO.name} ${userDTO.type=='master' ? '수리기사님' : '의뢰인' }
 					<c:set var="addressParts" value="${fn:split(userDTO.address, ' ')}" />
