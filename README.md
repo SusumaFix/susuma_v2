@@ -5,95 +5,77 @@
 
 
 ## **유지보수 기간**:
-- 2025년 1월 8일 ~ 9일
+- 2025년 1월 8일 ~ 10일
 
 | **한정우** |
 | :------: | 
 | [<img src="https://avatars.githubusercontent.com/groovyplanet" height=90> <br/> @groovyplanet](https://github.com/groovyplanet) |
 
 
-## **주요 변경 사항**
-
-### 1. **Oracle 테이블 생성 오류 수정**
-- REQUEST 테이블 생성 시 발생한 **ORA-00907 (missing right parenthesis)** 문제 해결
-  - STATUS 컬럼의 DEFAULT 값 설정 구문 수정 (`DEFAULT 'requested'`).
-  - 테이블 및 컬럼 이름을 대문자로 통일하여 SQL 코드의 일관성 확보.
-  - PRIMARY KEY 제약 조건 추가를 위한 **ALTER TABLE** 구문 작성.
-  - SQL 스크립트 전반 검토 및 오류 없는 실행 보장.
-
-### 2. **Jakarta EE 기반으로 라이브러리 전환**
-- 기존 **Java EE** 라이브러리(`jstl.jar`, `standard.jar`) 제거.
-- Jakarta EE 라이브러리 (`jakarta.servlet.jsp.jstl`, `jakarta.servlet.jsp.jstl-api`)로 대체:
-  - JSP 파일 내 URI를 Jakarta 네임스페이스 (`http://jakarta.ee/...`)로 변경.
-  - 기존 라이브러리로 인한 호환성 문제 해결.
-- **EC2 서버에서 Jakarta EE 전환 작업 진행:**
-  - Jakarta Migration Tool을 사용해 `.war` 파일 구조를 자동 변환 시도.
-  - 초기 **Invalid or corrupt jarfile** 오류 해결:
-    - 적합한 `jakarta-migration.jar` 버전 다운로드 및 사용.
-  - JSP 컴파일 문제 발생:
-    - `org.apache.jasper.JasperException: java.lang.ClassNotFoundException` 문제 해결.
-  - JSP 캐싱 문제로 인해 `org.apache.jsp.main_jsp` 관련 오류를 디버깅.
+### **주요 변경 사항**
 
 ---
 
-## **EC2 서버 환경 개선**
-
-### EC2 서버 Jakarta EE 배포
-1. **톰캣(Tomcat) 설정 및 재배포:**
-   - EC2 서버의 Tomcat 10.x에 **Jakarta EE 호환성 환경 구축**.
-   - `~/tomcat/bin/setenv.sh` 파일에 `-Duser.timezone=UTC` 설정 추가:
-     - 로컬과 서버 환경에서 일관성 있는 타임존 동작 보장.
-2. **서버와 로컬 간 불일치 해결:**
-   - JSP 구조와 라이브러리를 Jakarta EE에 맞게 조정.
-   - Tomcat의 `/lib` 디렉토리와 WAR 파일 내 라이브러리 충돌 검토:
-     - 불필요한 중복 라이브러리 제거.
+### 1. **Oracle 테이블 및 DB 스키마 수정**
+- `REQUEST` 테이블 생성 오류 수정:
+  - **ORA-00907 (missing right parenthesis)** 해결 및 `STATUS` 컬럼 DEFAULT 값 설정 (`DEFAULT 'requested'`).
+  - 테이블 및 컬럼 이름을 대문자로 통일하여 SQL 코드 일관성 확보.
+- `MESSAGE` 테이블:
+  - `MESSAGE` 칼럼 크기를 50자 → 255자로 확장하여 긴 메시지 저장 가능.
+- `POINT_HISTORY` 테이블:
+  - 칼럼 타입 변경으로 자바 `String` 처리 호환성 확보.
 
 ---
 
-## **트러블슈팅 기록**
-
-### 1. **Jakarta Migration Tool 설정 오류**
-- 문제: 초기 Jakarta Migration Tool 실행 시 `NoClassDefFoundError` 발생.
-- 원인: 올바른 `jakarta-migration.jar` 다운로드 실패.
-- 해결:
-  - 적합한 Jakarta Migration CLI 버전 수동 다운로드 및 실행.
-  - `org.eclipse.transformer.cli`와 의존성을 포함한 CLI 패키지를 사용하여 변환 성공.
-
-### 2. **EC2 서버에서 JSP 파일 로드 오류**
-- 문제: `HTTP Status 500 - NoClassDefFoundError` (javax.servlet.jsp.tagext.TagLibraryValidator).
-- 원인:
-  - Java EE 라이브러리와 Jakarta EE 라이브러리 혼용.
-  - JSP 파일에서 Java EE 네임스페이스 사용.
-- 해결:
-  - Java EE 라이브러리(`jstl.jar`, `standard.jar`) 제거.
-  - JSP 네임스페이스를 `http://jakarta.ee/...`로 변경.
-
-### 3. **JSP 컴파일 문제**
-- 문제: `HTTP Status 500 - ClassNotFoundException: org.apache.jsp.main_jsp`.
-- 원인:
-  - JSP 캐싱 문제로 인해 이전 컴파일된 JSP 파일이 충돌.
-- 해결:
-  - Tomcat의 `work/` 디렉토리 삭제 후 Tomcat 재시작:
-    ```bash
-    rm -rf ~/tomcat/work/*
-    ~/tomcat/bin/shutdown.sh
-    ~/tomcat/bin/startup.sh
-    ```
+### 2. **Jakarta EE로 전환**
+- 기존 Java EE 라이브러리 제거 후 Jakarta EE 라이브러리로 전환:
+  - JSP 파일 내 네임스페이스를 Jakarta (`http://jakarta.ee/...`)로 변경.
+  - JSP 캐싱 문제로 발생한 `ClassNotFoundException` 해결:
+    - Tomcat의 `work/` 디렉토리 삭제 후 서버 재시작.
+- EC2 서버 환경 설정:
+  - Jakarta EE 호환성을 위해 Tomcat 10.x에서의 설정 최적화.
+  - 라이브러리 충돌 방지를 위해 불필요한 중복 라이브러리 제거.
 
 ---
 
-## **추가 작업**
-- JSP 구조와 SQL 스크립트를 활용한 플랫폼 핵심 기능 복습 및 재구현.
-- Jakarta EE 전환 과정 중 발생한 모든 주요 오류 기록 및 해결 방안 공유:
-  - EC2 서버와 로컬 환경 간 설정 일관성 확보.
-  - JSP 파일과 Jakarta EE 라이브러리의 완전한 호환성 확보.
+### 3. **포인트 관련 로직 개선**
+- **적립 및 출금 로직 안정화**:
+  - `earnPoints` 및 `withdrawPoints` 로직에서 `NullPointerException` 방지.
+  - 잔액 계산 및 반환 값 검증 로직 추가.
+- 포인트 히스토리 조회 시 데이터 타입 오류 수정.
+- `pointsParam` 유효성 검사 로직 추가.
 
 ---
 
-## **향후 개선 방향**
+### 4. **메시지 관련 로직 개선**
+- 메시지 전송 로직:
+  - 메시지 길이 유효성 검사 추가 (255자로 제한).
+  - 메시지 내역 조회 및 업데이트 로직에서 예외 처리 강화.
+- 프론트엔드 수정:
+  - 잘못된 입력에 대한 사용자 피드백 개선.
+
+---
+
+### 5. **트랜잭션 처리 및 SQL 개선**
+- JDBC 트랜잭션 경계 설정 점검 및 커밋/롤백 처리 안정화.
+- SQL Mapper 파일 정리 및 주석 추가.
+- SQL 로깅 및 디버깅용 로그 메시지 강화.
+
+---
+
+### 6. **테스트 결과**
+- 데이터베이스 스키마 및 주요 기능 정상 작동 확인:
+  - 포인트 적립/출금, 메시지 전송/조회 모두 테스트 완료.
+- MyBatis Mapper 및 SQL 쿼리 실행 시 예외 없음 확인.
+- Jakarta EE 전환 후 JSP 및 WAR 배포 정상 작동 확인.
+
+---
+
+### **향후 개선 방향**
 - Jakarta EE 환경 최적화를 위한 추가 테스트 계획.
 - JSP 캐싱 문제 완전 해결을 위한 빌드 및 배포 프로세스 개선.
-- EC2 서버 자원 업그레이드(t2.micro → t2.medium) 고려.
+- EC2 서버 업그레이드(t2.micro → t2.medium) 고려. 
+
 
 
 -----------------------------------
