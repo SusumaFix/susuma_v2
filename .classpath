@@ -22,13 +22,11 @@
 	<classpathentry kind="lib" path="C:/Users/ㅗ/Desktop/workspace/SUSUMA/susuma/susuma_project/src/main/webapp/WEB-INF/lib/jakarta.servlet.jsp.jstl-3.0.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ㅗ/Desktop/workspace/SUSUMA/susuma/susuma_project/src/main/webapp/WEB-INF/lib/jakarta.servlet.jsp.jstl-api-3.0.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ㅗ/Desktop/workspace/SUSUMA/susuma/susuma_project/src/main/webapp/WEB-INF/lib/json-simple-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ㅗ/Desktop/workspace/SUSUMA/susuma/susuma_project/src/main/webapp/WEB-INF/lib/jstl.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ㅗ/Desktop/workspace/SUSUMA/susuma/susuma_project/src/main/webapp/WEB-INF/lib/mail-1.4.7.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ㅗ/Desktop/workspace/SUSUMA/susuma/susuma_project/src/main/webapp/WEB-INF/lib/mailapi.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ㅗ/Desktop/workspace/SUSUMA/susuma/susuma_project/src/main/webapp/WEB-INF/lib/mybatis-3.5.16.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ㅗ/Desktop/workspace/SUSUMA/susuma/susuma_project/src/main/webapp/WEB-INF/lib/ojdbc11.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ㅗ/Desktop/workspace/SUSUMA/susuma/susuma_project/src/main/webapp/WEB-INF/lib/pop3.jar"/>
 	<classpathentry kind="lib" path="C:/Users/ㅗ/Desktop/workspace/SUSUMA/susuma/susuma_project/src/main/webapp/WEB-INF/lib/smtp.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ㅗ/Desktop/workspace/SUSUMA/susuma/susuma_project/src/main/webapp/WEB-INF/lib/standard.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

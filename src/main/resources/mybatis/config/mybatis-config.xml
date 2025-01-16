@@ -16,7 +16,7 @@
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
 				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
-				<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521/xe" />
 				<property name="username" value="SSM" />
 				<property name="password" value="SSM" />
 			</dataSource>
