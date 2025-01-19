@@ -1,6 +1,6 @@
 # 수리 전문가 매칭 플랫폼 V2 (2025) From @groovyplanet
 
-![title](https://github.com/user-attachments/assets/024ac0d4-db57-4204-840d-a9bd553eb899)
+![Image](https://github.com/user-attachments/assets/7a08badf-2063-4be1-838b-f08d4bff7ce2)
 
 
 
