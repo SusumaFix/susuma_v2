@@ -1,163 +1,115 @@
-# 수리 전문가 매칭 플랫폼 V2 (2025) From @groovyplanet
+# 🚀 **수리 전문가 매칭 플랫폼 V2 (2025)** 
 
-![Image](https://github.com/user-attachments/assets/7a08badf-2063-4be1-838b-f08d4bff7ce2)
+![Image](https://github.com/user-attachments/assets/7a08badf-2063-4be1-838b-f08d4bff7ce2)  
 
+---
 
+## 🌟 **프로젝트 개요**  
+"수리 전문가 매칭 플랫폼 V2"는 V1에서의 모든 경험과 피드백을 바탕으로 **완전한 재설계와 기능 강화**를 통해 배포까지 성공적으로 완료한 프로젝트입니다.  
+V2는 최신 Jakarta EE 표준과 JSP를 기반으로 AJAX Pulling 기술을 활용하여 **실시간 대화 기능**과 안정적인 예약 관리 시스템을 제공합니다.  
+사용자 경험과 성능을 극대화하며, **실제 서비스로의 상용화** 가능성을 염두에 둔 완성도 높은 플랫폼입니다.  
 
-## **업데이트 기간**:
-- 2025년 1월 8일 ~ 10일 , 16일 (4 day)
+---
 
-| **한정우** |
-| :------: | 
-| [<img src="https://avatars.githubusercontent.com/groovyplanet" height=90> <br/> @groovyplanet](https://github.com/groovyplanet) |
+## 🗓️ **개발 기간**  
+- 2025년 1월 8일 ~ 10일, 16일 (총 4일간 집중 개발)  
 
+| **한정우** |  
+| :------: |  
+| [<img src="https://avatars.githubusercontent.com/groovyplanet" height=90> <br/> @groovyplanet](https://github.com/groovyplanet) |  
 
-## **주요 변경 사항**
+---
 
-### **1. Oracle 테이블 및 DB 스키마 수정**
+## ✨ **주요 개선 사항**  
+
+### 📊 **1. 데이터베이스 및 스키마 최적화**  
 - **REQUEST 테이블**:  
-  - `STATUS` 컬럼에 기본값 설정(`DEFAULT 'requested'`) 및 SQL 문법 오류(ORA-00907) 수정.
-  - 테이블 및 컬럼 이름을 대문자로 통일하여 SQL 코드 일관성 유지.
+  - `STATUS` 컬럼에 기본값(`DEFAULT 'requested'`) 설정, SQL 오류(ORA-00907) 수정.  
+  - 테이블 및 컬럼 이름 대문자 통일로 SQL 코드 가독성과 유지보수성 개선.  
 - **MESSAGE 테이블**:  
-  - `MESSAGE` 컬럼 크기를 기존 50자에서 255자로 확장하여 긴 메시지 저장 가능.
+  - 메시지 컬럼 크기를 기존 50자에서 255자로 확장, 긴 메시지도 안정적으로 저장 가능.  
 - **POINT_HISTORY 테이블**:  
-  - 컬럼 타입 변경으로 자바와의 데이터 타입 호환성 확보.
+  - 컬럼 타입을 Java 호환성에 맞게 수정, 데이터 무결성 강화.  
 
 ---
 
-### **2. Jakarta EE 전환**
-- 기존 Java EE에서 Jakarta EE로 전환:
-  - JSP 파일 네임스페이스를 Jakarta(`http://jakarta.ee/...`)로 수정.
-  - Tomcat 10.x 환경에서 Jakarta EE 호환성 최적화.
-- EC2 서버 설정:
-  - 중복 라이브러리를 제거하고 배포 환경 최적화.
+### ⚙️ **2. Jakarta EE 기반으로 완전 전환**  
+- **표준 기술 적용**:  
+  - Java EE에서 Jakarta EE로 전환, 최신 JSP 네임스페이스(`http://jakarta.ee/...`)로 변경.  
+  - Tomcat 10.x 기반의 최신 서버 환경에 최적화.  
+- **배포 안정성 강화**:  
+  - 중복 라이브러리 제거 및 EC2 서버 최적화.  
 
 ---
 
-### **3. 예약 및 수리 로직 개선**
-- 예약자와 수리 기사 입장에서의 버튼 표시 로직 수정:
-  - **예약자 입장**:
-    - 예약일 및 시간이 지나지 않은 경우 "예약 완료" 버튼 표시.
-    - 예약일 및 시간이 지난 경우 "결제 요청" 버튼 표시.
-  - **수리 기사 입장**:
-    - 예약일이 미래일 경우 "예약 완료", 예약일이 지났을 경우 "수리 중" 버튼 표시.
-- JSP의 `<c:choose>` 및 `<c:when>` 태그 활용으로 조건 처리 로직 최적화.
+### 🔄 **3. AJAX Pulling을 활용한 실시간 대화 구현**  
+- **실시간 대화 기능**:  
+  - WebSocket이 아닌 **AJAX Pulling 기술**을 활용해 서버 부하를 최소화하면서 실시간 메시지 송수신 가능.  
+  - 메시지 전송 시 유효성 검사와 예외 처리 강화.  
+  - 사용자 입력에 대한 즉각적인 피드백 제공.  
+- **유연한 데이터 처리**:  
+  - 255자 메시지 길이 제한 내에서 안정적인 데이터 전송 및 조회 가능.  
 
 ---
 
-### **4. 포인트 관련 로직 개선**
-- 포인트 적립 및 출금 로직에서의 안정성 개선:
-  - `NullPointerException` 방지 로직 추가.
-  - 잔액 계산 및 반환 값 검증 로직 강화.
-- 포인트 히스토리 조회 시 데이터 타입 오류 해결.
-- 포인트 유효성 검사 로직 추가.
+### 📅 **4. 예약 및 수리 로직 전면 개선**  
+- **사용자 맞춤 예약 관리**:  
+  - **예약자**: 예약일 및 시간이 지나지 않은 경우 "예약 완료" 버튼, 예약일이 지난 경우 "결제 요청" 버튼 표시.  
+  - **수리기사**: 예약일 상태에 따라 "수리 중" 또는 "예약 완료" 버튼 표시.  
+- **JSP 기반 로직 최적화**:  
+  - `<c:choose>` 및 `<c:when>` 태그를 활용하여 로직의 직관성과 유지보수성을 향상.  
 
 ---
 
-### **5. 메시지 관련 로직 개선**
-- 메시지 전송 로직:
-  - 메시지 길이 유효성 검사(255자 제한) 추가.
-  - 메시지 내역 조회 및 업데이트 로직 예외 처리 강화.
-- 사용자 경험 개선:
-  - 잘못된 입력에 대한 피드백 메시지 추가.
+### 💰 **5. 포인트 시스템 안정성 강화**  
+- 포인트 적립 및 출금 로직 개선:  
+  - NullPointerException 방지 로직 추가.  
+  - 잔액 계산 및 반환 값 검증 강화로 데이터 무결성 확보.  
+- 포인트 히스토리 조회와 데이터 검증 로직을 최적화하여 사용자 신뢰도 상승.  
 
 ---
 
-### **6. Tomcat 서버 설정 개선**
-- **시간대 문제 해결**:
-  - Tomcat의 JVM 옵션에 `-Duser.timezone=Asia/Seoul` 추가.
-  - DB와 서버 간 시간 불일치 문제를 해결하여 시간 기반 로직의 정확성 확보.
-- **캐싱 문제 해결**:
-  - Tomcat `work/` 디렉토리 삭제를 통해 JSP 업데이트 반영 문제 해결.
+### 🌐 **6. 서버 및 배포 환경 최적화**  
+- **시간대 불일치 문제 해결**:  
+  - Tomcat JVM 옵션에 `-Duser.timezone=Asia/Seoul` 추가하여 서버와 DB 간 시간 동기화 문제 해결.  
+- **배포 프로세스 개선**:  
+  - JSP 캐싱 문제 해결을 위해 Tomcat `work/` 디렉토리 삭제 프로세스를 자동화.  
 
 ---
 
-## **테스트 결과**
-- 데이터베이스 스키마 및 주요 기능 정상 작동 확인:
-  - 포인트 적립/출금, 메시지 전송/조회 모두 테스트 완료.
-- JSP 및 WAR 배포 후 Jakarta EE 환경에서 정상 작동 확인.
-- 예약 및 수리 버튼 로직, 시간대 문제 모두 해결.
+## ✅ **테스트 결과**  
+- 데이터베이스 및 주요 기능 정상 작동 확인:  
+  - 포인트 적립/출금, 메시지 송수신, 예약 로직 모두 테스트 완료.  
+- AJAX Pulling 기반의 실시간 대화 기능 성공적으로 구현 및 배포.  
+- Jakarta EE 환경에서 JSP와 WAR 배포 정상 작동 확인.  
 
 ---
 
-## **향후 개선 방향**
-1. Jakarta EE 전환 후 성능 최적화를 위한 추가 테스트 계획.
-2. JSP 캐싱 문제 완전 해결을 위해 빌드 및 배포 프로세스 개선.
-3. EC2 서버 업그레이드(t2.micro → t2.medium) 검토 및 성능 테스트.
+## 🧩 **주요 기능**  
+- **사용자 기능**  
+  - 예약 관리, 포인트 적립/출금, 프로필 관리, 실시간 메시지 기능.  
+  - 의뢰인: 수리 예약, 후기 등록, 채팅을 통한 수리기사와의 커뮤니케이션.  
+  - 수리기사: 예약 승인, 진행 상태 관리.  
+- **관리자 기능**  
+  - 수리기사 가입 승인 및 회원 관리.  
+  - 예약 및 후기 검토 및 게시판 관리.  
 
+---
 
------------------------------------
+## 🛠️ **개발 환경 및 기술 스택**  
+- **언어**: Java 11  
+- **데이터베이스**: Oracle 11  
+- **서버 환경**: Apache Tomcat 10  
+- **웹 기술**: JSP/Servlet, JSTL, AJAX  
+- **ORM**: MyBatis  
+- **API**: Kakao 지도, Daum 우편번호 검색, NAVER 스마트 에디터, PortOne  
 
-- **주요 기능**
-   - `사용자`
-      - 예약·포인트·프로필 관리 및 채팅
-      - 의뢰인 : 수리 예약 및 후기 등록
-      - 수리기사 : 수리 예약 승인
-   - `관리자`
-       - 회원 관리(수리기사 가입 승인)
-       - 예약 및 후기 관리
-       - 게시판 관리
+---
 
-
-<br/>
-
-## 🤹‍♂️ 개발 환경 및 기술 스택
-
-| 항목 | 내용 |
-|---|---|
-| **프로그래밍 언어** | Java 11 |
-| **데이터베이스(DB)** | Oracle 11 |
-| **애플리케이션 서버** | Apache Tomcat 10 |
-| **웹 기술** | ✨**JSP/Servlet**, JSTL |
-| **ORM** | MyBatis |
-| **API** | Kakao 지도, Daum 우편번호 검색, NAVER 스마트 에디터, PortOne |
-| **개발 도구(IDE)** | Eclipse, VSCode |
-<br/>
-
-## 🎡 문서
-
-<details>
-  <summary>E-R Diagram</summary>
-  
-![image](https://github.com/user-attachments/assets/410d6ee6-c1c6-489e-9cde-737dcdb0201b)
-
-
-</details>
-
-
-<details>
-  <summary>요구사항 정의서</summary>
-  
-![제목 없음](https://github.com/user-attachments/assets/a769397f-f7e8-43ae-bb29-b4206594acaa)
-
-
-</details>
-<details>
-  <summary>화면 구성도</summary>
-
-![image](https://github.com/user-attachments/assets/e0b58ac3-c044-468f-adce-e9a9eda19af8)
-
-</details>
-<details>
-  <summary>UI 설계</summary>
-  
-![image](https://github.com/user-attachments/assets/41f176e8-3aba-4ba0-8af4-fcffc0c12585)
-
-
-</details>
-<details>
-  <summary>발표 PPT</summary>
- 
-- 녹화영상 - https://drive.google.com/file/d/1KPLjIDQb2eJQuXJGfi86WiTOM05YGeTK/view?usp=sharing
-![SUSUMA PROJECT-1](https://github.com/user-attachments/assets/58943509-51f9-40c6-9615-2460bdd25085)
-![SUSUMA PROJECT-2](https://github.com/user-attachments/assets/42860ace-d998-40f4-a8bd-d211f46235d0)
-</details>
-
-<br/>
-
-## 🧩 기능 시연
-![111](https://github.com/user-attachments/assets/b138dcb3-6ba0-479b-907d-a48cf28440be)
-![444](https://github.com/user-attachments/assets/7d6ee237-be42-4fcf-a27f-5c41a89734eb)
-![555](https://github.com/user-attachments/assets/9f316705-a4e2-4645-b590-901efe8b83a6)
-
-
+## 🎥 **기능 시연**  
+- **예약 관리 및 수리기사와의 실시간 대화**  
+  ![기능 시연 1](https://github.com/user-attachments/assets/b138dcb3-6ba0-479b-907d-a48cf28440be)  
+- **포인트 적립 및 사용 로직**  
+  ![기능 시연 2](https://github.com/user-attachments/assets/7d6ee237-be42-4fcf-a27f-5c41a89734eb)  
+- **관리자 페이지에서의 회원 및 예약 관리**  
+  ![기능 시연 3](https://github.com/user-attachments/assets/9f316705-a4e2-4645-b590-901efe8b83a6)  
