@@ -18,11 +18,11 @@
 		LEFT JOIN CATEGORY CR ON CR.CA_NO = C.ROOT_NO
 		LEFT JOIN REVIEW RE ON RE.REQ_NO = R.REQ_NO
 		WHERE 1 = 1
-		<if test="clientNo != null">
-			AND MC.ME_NO = #{clientNo}
+		<if test="clientNo != null and clientNo != ''">
+			AND MC.ME_NO = <choose><when test="clientNo != ''">CAST(#{clientNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
-		<if test="masterNo != null">
-			AND MM.ME_NO = #{masterNo}
+		<if test="masterNo != null and masterNo != ''">
+			AND MM.ME_NO = <choose><when test="masterNo != ''">CAST(#{masterNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
 		<if test="status != null and status != 'all'">
 			AND R.STATUS = #{status}
@@ -33,7 +33,7 @@
 		<if test="sortField != 'R.REQUEST_DATE'">
 			ORDER BY ${sortField} ${sortOrder} NULLS LAST
 		</if>
-		LIMIT #{limit} OFFSET #{offset}
+		LIMIT (#{endRow} - #{startRow} + 1) OFFSET (#{startRow} - 1)
 	</select>
 
 	<select id="countRequests" parameterType="map" resultType="int">
@@ -42,11 +42,11 @@
 		JOIN MEMBER MC ON R.CLIENT_NO = MC.ME_NO
 		JOIN MEMBER MM ON R.MASTER_NO = MM.ME_NO
 		WHERE 1 = 1
-		<if test="clientNo != null">
-			AND MC.ME_NO = #{clientNo}
+		<if test="clientNo != null and clientNo != ''">
+			AND MC.ME_NO = <choose><when test="clientNo != ''">CAST(#{clientNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
-		<if test="masterNo != null">
-			AND MM.ME_NO = #{masterNo}
+		<if test="masterNo != null and masterNo != ''">
+			AND MM.ME_NO = <choose><when test="masterNo != ''">CAST(#{masterNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
 		<if test="status != null and status != 'all'">
 			AND R.STATUS = #{status}
@@ -56,9 +56,10 @@
 	<select id="getNewRequestCount" parameterType="map" resultType="int">
 		SELECT COUNT(*)
 		FROM REQUEST R
-				 JOIN MEMBER MC ON R.CLIENT_NO = MC.ME_NO
-				 JOIN MEMBER MM ON R.MASTER_NO = MM.ME_NO
-		WHERE MM.ME_NO = #{meNo} AND R.STATUS = 'requested'
+		JOIN MEMBER MC ON R.CLIENT_NO = MC.ME_NO
+		JOIN MEMBER MM ON R.MASTER_NO = MM.ME_NO
+		WHERE MM.ME_NO = <choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
+		AND R.STATUS = 'requested'
 	</select>
 
 	<select id="selectRequestCnts" parameterType="map" resultType="com.susuma.request.model.RequestDTO">
@@ -71,11 +72,11 @@
 		COUNT(*) FILTER (WHERE R.STATUS = 'cancel') AS cancelCnt
 		FROM REQUEST R
 		WHERE 1 = 1
-		<if test="clientNo != null">
-			AND CLIENT_NO = #{clientNo}
+		<if test="clientNo != null and clientNo != ''">
+			AND CLIENT_NO = <choose><when test="clientNo != ''">CAST(#{clientNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
-		<if test="masterNo != null">
-			AND MASTER_NO = #{masterNo}
+		<if test="masterNo != null and masterNo != ''">
+			AND MASTER_NO = <choose><when test="masterNo != ''">CAST(#{masterNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
 	</select>
 
@@ -91,8 +92,8 @@
 		LEFT JOIN CATEGORY C ON C.CA_NO = MM.CA_NO
 		LEFT JOIN CATEGORY CR ON CR.CA_NO = C.ROOT_NO
 		WHERE 1 = 1
-		<if test="reqNo != null">
-			AND R.REQ_NO = #{reqNo}
+		<if test="reqNo != null and reqNo != ''">
+			AND R.REQ_NO = <choose><when test="reqNo != ''">CAST(#{reqNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
 	</select>
 
@@ -101,42 +102,50 @@
 			SELECT nextval('request_seq')
 		</selectKey>
 		INSERT INTO REQUEST (REQ_NO, MASTER_NO, CLIENT_NO, CONTENT, REQUEST_DATE, REQUEST_TIME, ADDRESS, ADDRESS_DETAIL, LATITUDE, LONGITUDE, PHONE_NUM)
-		VALUES (#{reqNo}, #{masterNo}, #{clientNo}, #{content}, #{requestDate}, #{requestTime}, #{address}, #{addressDetail}, #{latitude}, #{longitude}, #{phoneNum})
+		VALUES (
+		#{reqNo},
+		<choose><when test="masterNo != null and masterNo != ''">CAST(#{masterNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+		<choose><when test="clientNo != null and clientNo != ''">CAST(#{clientNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+		#{content}, #{requestDate}, #{requestTime}, #{address}, #{addressDetail},
+		<choose><when test="latitude != null and latitude != ''">CAST(#{latitude} AS NUMERIC)</when><otherwise>NULL</otherwise></choose>,
+		<choose><when test="longitude != null and longitude != ''">CAST(#{longitude} AS NUMERIC)</when><otherwise>NULL</otherwise></choose>,
+		#{phoneNum}
+		)
 	</insert>
 
 	<update id="updateRequest" parameterType="com.susuma.request.model.RequestDTO">
 		UPDATE REQUEST
-		SET
-		<if test="status != null">
-			STATUS = #{status},
-			<if test="status == 'approved'.toString()">
-				APPROVAL_TIME = NOW()
+		<set>
+			<if test="status != null">
+				STATUS = #{status},
+				<if test="status == 'approved'.toString()">
+					APPROVAL_TIME = NOW(),
+				</if>
+				<if test="status == 'paywait'.toString()">
+					PAY_AMOUNT = <choose><when test="payAmount != null and payAmount != ''">CAST(#{payAmount} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+					PAY_REQUEST_TIME = NOW(),
+				</if>
+				<if test="status == 'paid'.toString()">
+					PAY_STATUS = 'Y',
+					PAID_TIME = NOW(),
+				</if>
+				<if test="status == 'cancel'.toString()">
+					CANCEL_TIME = NOW(),
+				</if>
 			</if>
-			<if test="status == 'paywait'.toString()">
-				PAY_AMOUNT = #{payAmount},
-				PAY_REQUEST_TIME = NOW()
-			</if>
-			<if test="status == 'paid'.toString()">
-				PAY_STATUS = 'Y',
-				PAID_TIME = NOW()
-			</if>
-			<if test="status == 'cancel'.toString()">
-				CANCEL_TIME = NOW()
-			</if>
-		</if>
-		REQ_NO = REQ_NO -- 더미 라인, SET 절 마지막의 콤마 문제 방지
-		WHERE REQ_NO = #{reqNo}
+		</set>
+		WHERE REQ_NO = <choose><when test="reqNo != null and reqNo != ''">CAST(#{reqNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</update>
 
 	<update id="updateMemberPoints" parameterType="com.susuma.request.model.RequestDTO">
 		UPDATE MEMBER
-		SET POINT = POINT - #{payAmount}
-		WHERE ME_NO = #{meNo}
+		SET POINT = POINT - <choose><when test="payAmount != null and payAmount != ''">CAST(#{payAmount} AS INTEGER)</when><otherwise>0</otherwise></choose>
+		WHERE ME_NO = <choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</update>
 
 	<delete id="deleteRequest" parameterType="string">
 		DELETE FROM REQUEST
-		WHERE REQ_NO = #{reqNo}
+		WHERE REQ_NO = <choose><when test="reqNo != null and reqNo != ''">CAST(#{reqNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</delete>
 
 </mapper>

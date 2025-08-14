@@ -10,7 +10,7 @@
 		JOIN MEMBER M ON M.ME_NO = B.ME_NO
 		<choose>
 			<when test=' type.equals("myask") '>
-				WHERE B.TYPE = 'ask' AND B.ME_NO = #{meNo}
+				WHERE B.TYPE = 'ask' AND B.ME_NO = <choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 			</when>
 			<otherwise>
 				WHERE B.TYPE = #{type}
@@ -35,7 +35,7 @@
 		JOIN MEMBER M ON M.ME_NO = B.ME_NO
 		<choose>
 			<when test=' type.equals("myask") '>
-				WHERE B.TYPE = 'ask' AND B.ME_NO = #{meNo}
+				WHERE B.TYPE = 'ask' AND B.ME_NO = <choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 			</when>
 			<otherwise>
 				WHERE B.TYPE = #{type}
@@ -53,67 +53,75 @@
 	</select>
 
 	<select id="selectBoard" resultType="com.susuma.board.model.BoardDTO">
-		SELECT * FROM BOARD WHERE BO_NO = #{boNo}
+		SELECT * FROM BOARD WHERE BO_NO = <choose><when test="boNo != null and boNo != ''">CAST(#{boNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</select>
 
 	<insert id="insertBoard" parameterType="com.susuma.board.model.BoardDTO">
 		INSERT INTO BOARD(BO_NO, ME_NO, TYPE, TITLE, CONTENT)
-		VALUES(nextval('board_seq'), #{meNo}, #{type}, #{title}, #{content})
+		VALUES(
+		nextval('board_seq'),
+		<choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+		#{type}, #{title}, #{content}
+		)
 	</insert>
 
 	<update id="updateBoard" parameterType="com.susuma.board.model.BoardDTO">
 		UPDATE BOARD SET TITLE=#{title}, CONTENT=#{content}, UPDATE_TIME = NOW()
-		WHERE BO_NO=#{boNo}
+		WHERE BO_NO = <choose><when test="boNo != null and boNo != ''">CAST(#{boNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</update>
 
 	<delete id="deleteBoard" parameterType="string">
 		DELETE FROM BOARD
-		WHERE BO_NO = #{boNo}
+		WHERE BO_NO = <choose><when test="boNo != null and boNo != ''">CAST(#{boNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</delete>
 
 	<insert id="askWrite" parameterType="com.susuma.board.model.BoardDTO">
 		INSERT INTO BOARD(BO_NO, ME_NO, TITLE, CONTENT, TYPE)
-		VALUES(nextval('board_seq'), #{meNo}, #{title}, #{content}, #{type})
+		VALUES(
+		nextval('board_seq'),
+		<choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+		#{title}, #{content}, #{type}
+		)
 	</insert>
 
 	<select id="askView" resultType="com.susuma.board.model.BoardDTO">
-		SELECT * FROM BOARD WHERE BO_NO = #{boNo}
+		SELECT * FROM BOARD WHERE BO_NO = <choose><when test="boNo != null and boNo != ''">CAST(#{boNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</select>
 
 	<select id="getPreNext" resultType="com.susuma.board.model.BoardDTO">
 		SELECT * FROM (
-						  SELECT
-							  BO_NO,
-							  LEAD(BO_NO, 1, 9999) OVER(ORDER BY BO_NO) AS next,
-               LAG(BO_NO, 1, 9999) OVER(ORDER BY BO_NO) AS last,
-               TITLE,
-               LEAD(TITLE, 1, 9999) OVER(ORDER BY BO_NO) AS nexttitle,
-               LAG(TITLE, 1, 9999) OVER(ORDER BY BO_NO) AS lasttitle
-						  FROM BOARD
-						  WHERE TYPE = 'notice'
-						  ORDER BY BO_NO DESC
-					  ) AS A
-		WHERE A.BO_NO = #{boNo}
+		SELECT
+		BO_NO,
+		LEAD(BO_NO, 1, 9999) OVER(ORDER BY BO_NO) AS next,
+		LAG(BO_NO, 1, 9999) OVER(ORDER BY BO_NO) AS last,
+		TITLE,
+		LEAD(TITLE, 1, 9999) OVER(ORDER BY BO_NO) AS nexttitle,
+		LAG(TITLE, 1, 9999) OVER(ORDER BY BO_NO) AS lasttitle
+		FROM BOARD
+		WHERE TYPE = 'notice'
+		ORDER BY BO_NO DESC
+		) AS A
+		WHERE A.BO_NO = <choose><when test="boNo != null and boNo != ''">CAST(#{boNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</select>
 
 	<update id="insertReply" parameterType="com.susuma.board.model.BoardDTO">
 		UPDATE BOARD
 		SET
-			ANSWER = #{answer},
-			ANSWER_INSERT_TIME = CASE
-									 WHEN ANSWER_INSERT_TIME IS NULL THEN NOW()
-									 ELSE ANSWER_INSERT_TIME
-				END,
-			ANSWER_UPDATE_TIME = CASE
-									 WHEN ANSWER_INSERT_TIME IS NOT NULL THEN NOW()
-									 ELSE ANSWER_UPDATE_TIME
-				END
-		WHERE BO_NO = #{boNo}
+		ANSWER = #{answer},
+		ANSWER_INSERT_TIME = CASE
+		WHEN ANSWER_INSERT_TIME IS NULL THEN NOW()
+		ELSE ANSWER_INSERT_TIME
+		END,
+		ANSWER_UPDATE_TIME = CASE
+		WHEN ANSWER_INSERT_TIME IS NOT NULL THEN NOW()
+		ELSE ANSWER_UPDATE_TIME
+		END
+		WHERE BO_NO = <choose><when test="boNo != null and boNo != ''">CAST(#{boNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</update>
 
 	<delete id="askDelete" parameterType="string">
 		DELETE FROM BOARD
-		WHERE BO_NO = #{boNo}
+		WHERE BO_NO = <choose><when test="boNo != null and boNo != ''">CAST(#{boNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</delete>
 
 </mapper>

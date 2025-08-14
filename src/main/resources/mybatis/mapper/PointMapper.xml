@@ -4,42 +4,54 @@
 <mapper namespace="com.susuma.point.model.PointMapper">
 
 	<select id="MemberPoints" parameterType="String" resultType="Integer">
-		SELECT point FROM MEMBER WHERE ME_NO = #{meNo}
+		SELECT point FROM MEMBER WHERE ME_NO = <choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</select>
 
 	<select id="getPointEarnings" parameterType="String" resultType="com.susuma.point.model.PointDTO">
 		SELECT pc_no, me_no, point, pc_time AS insertTime
 		FROM POINT_HISTORY
-		WHERE me_no = #{meNo} AND point > 0
+		WHERE me_no = <choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose> AND point > 0
 		ORDER BY pc_time DESC
 	</select>
 
 	<select id="getPointSpendings" parameterType="String" resultType="com.susuma.point.model.PointDTO">
 		SELECT pc_no, me_no, point, pc_time AS insertTime
 		FROM POINT_HISTORY
-		WHERE me_no = #{meNo} AND point &lt; 0
+		WHERE me_no = <choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose> AND point &lt; 0
 		ORDER BY pc_time DESC
 	</select>
 
 	<select id="getWithdrawalHistory" parameterType="String" resultType="com.susuma.point.model.PointDTO">
 		SELECT pc_no, me_no, point, pc_time AS insertTime
 		FROM POINT_HISTORY
-		WHERE me_no = #{meNo} AND point &lt; 0
+		WHERE me_no = <choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose> AND point &lt; 0
 		ORDER BY pc_time DESC
 	</select>
 
 	<update id="updateMemberPoints">
-		UPDATE MEMBER SET point = #{point} WHERE me_no = #{meNo}
+		UPDATE MEMBER
+		SET point = <choose><when test="point != null and point != ''">CAST(#{point} AS INTEGER)</when><otherwise>point</otherwise></choose>
+		WHERE me_no = <choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</update>
 
 	<insert id="addSpendingHistory">
 		INSERT INTO POINT_HISTORY (pc_no, me_no, point, pc_time)
-		VALUES (nextval('point_history_seq'), #{meNo}, #{point}, NOW())
+		VALUES (
+		nextval('point_history_seq'),
+		<choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+		<choose><when test="point != null and point != ''">CAST(#{point} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+		NOW()
+		)
 	</insert>
 
 	<insert id="addEarningHistory">
 		INSERT INTO POINT_HISTORY (pc_no, me_no, point, pc_time)
-		VALUES (nextval('point_history_seq'), #{meNo}, #{point}, NOW())
+		VALUES (
+		nextval('point_history_seq'),
+		<choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+		<choose><when test="point != null and point != ''">CAST(#{point} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+		NOW()
+		)
 	</insert>
 
 </mapper>

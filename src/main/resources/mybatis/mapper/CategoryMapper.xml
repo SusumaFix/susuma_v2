@@ -13,7 +13,7 @@
 			AND C.ROOT_NO IS NULL
 		</if>
 		<if test="rootNo != null">
-			AND C.ROOT_NO = #{rootNo}
+			AND C.ROOT_NO = <choose><when test="rootNo != ''">CAST(#{rootNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
 		ORDER BY C.CA_NO ASC
 	</select>

@@ -8,24 +8,29 @@
 	<select id="selectAlerts" parameterType="String" resultType="com.susuma.alert.model.AlertDTO">
 		SELECT AL_NO, ME_NO, REQ_NO, MESSAGE, SEND_TIME
 		FROM ALERT
-		WHERE ME_NO = #{meNo}
+		WHERE ME_NO = <choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		ORDER BY SEND_TIME DESC
 	</select>
 
 	<select id="getNewAlertCount" parameterType="String" resultType="int">
 		SELECT COUNT(*)
 		FROM ALERT
-		WHERE ME_NO = #{meNo}
+		WHERE ME_NO = <choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</select>
 
 	<insert id="insertAlert" parameterType="com.susuma.alert.model.AlertDTO">
 		INSERT INTO ALERT (AL_NO, ME_NO, REQ_NO, MESSAGE)
-		VALUES (nextval('alert_seq'), #{meNo}, #{reqNo}, #{message})
+		VALUES (
+		nextval('alert_seq'),
+		<choose><when test="meNo != null and meNo != ''">CAST(#{meNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+		<choose><when test="reqNo != null and reqNo != ''">CAST(#{reqNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+		#{message}
+		)
 	</insert>
 
 	<delete id="deleteAlert" parameterType="string">
 		DELETE FROM ALERT
-		WHERE AL_NO = #{alNo}
+		WHERE AL_NO = <choose><when test="alNo != null and alNo != ''">CAST(#{alNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</delete>
 
 </mapper>

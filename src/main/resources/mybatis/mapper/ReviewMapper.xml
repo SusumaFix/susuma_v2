@@ -15,14 +15,14 @@
 		LEFT JOIN CATEGORY C ON C.CA_NO = MM.CA_NO
 		LEFT JOIN CATEGORY CR ON CR.CA_NO = C.ROOT_NO
 		WHERE 1 = 1
-		<if test="clientNo != null">
-			AND MC.ME_NO = #{clientNo}
+		<if test="clientNo != null and clientNo != ''">
+			AND MC.ME_NO = <choose><when test="clientNo != ''">CAST(#{clientNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
-		<if test="masterNo != null">
-			AND MM.ME_NO = #{masterNo}
+		<if test="masterNo != null and masterNo != ''">
+			AND MM.ME_NO = <choose><when test="masterNo != ''">CAST(#{masterNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
 		ORDER BY ${sortField} ${sortOrder} NULLS LAST
-		LIMIT #{limit} OFFSET #{offset}
+		LIMIT (#{endRow} - #{startRow} + 1) OFFSET (#{startRow} - 1)
 	</select>
 
 	<select id="countReviews" parameterType="map" resultType="int">
@@ -32,11 +32,11 @@
 		JOIN MEMBER MM ON MM.ME_NO = REQ.MASTER_NO
 		JOIN MEMBER MC ON MC.ME_NO = REQ.CLIENT_NO
 		WHERE 1 = 1
-		<if test="clientNo != null">
-			AND MC.ME_NO = #{clientNo}
+		<if test="clientNo != null and clientNo != ''">
+			AND MC.ME_NO = <choose><when test="clientNo != ''">CAST(#{clientNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
-		<if test="masterNo != null">
-			AND MM.ME_NO = #{masterNo}
+		<if test="masterNo != null and masterNo != ''">
+			AND MM.ME_NO = <choose><when test="masterNo != ''">CAST(#{masterNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
 	</select>
 
@@ -49,28 +49,33 @@
 		JOIN MEMBER MM ON MM.ME_NO = REQ.MASTER_NO
 		JOIN MEMBER MC ON MC.ME_NO = REQ.CLIENT_NO
 		WHERE 1 = 1
-		<if test="reqNo != null">
-			AND RE.REQ_NO = #{reqNo}
+		<if test="reqNo != null and reqNo != ''">
+			AND RE.REQ_NO = <choose><when test="reqNo != ''">CAST(#{reqNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 		</if>
 	</select>
 
 	<insert id="insertReview" parameterType="com.susuma.review.model.ReviewDTO">
 		INSERT INTO REVIEW (RE_NO, REQ_NO, CONTENT, STAR_SCORE)
-		VALUES (nextval('review_seq'), #{reqNo}, #{content}, #{starScore})
+		VALUES (
+		nextval('review_seq'),
+		<choose><when test="reqNo != null and reqNo != ''">CAST(#{reqNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+		#{content},
+		<choose><when test="starScore != null and starScore != ''">CAST(#{starScore} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
+		)
 	</insert>
 
 	<update id="updateReview" parameterType="com.susuma.review.model.ReviewDTO">
 		UPDATE REVIEW
 		SET
-			CONTENT = #{content},
-			STAR_SCORE = #{starScore},
-			UPDATE_TIME = NOW()
-		WHERE RE_NO = #{ReNo}
+		CONTENT = #{content},
+		STAR_SCORE = <choose><when test="starScore != null and starScore != ''">CAST(#{starScore} AS INTEGER)</when><otherwise>NULL</otherwise></choose>,
+		UPDATE_TIME = NOW()
+		WHERE RE_NO = <choose><when test="ReNo != null and ReNo != ''">CAST(#{ReNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</update>
 
 	<delete id="deleteReview" parameterType="string">
 		DELETE FROM REVIEW
-		WHERE RE_NO = #{ReNo}
+		WHERE RE_NO = <choose><when test="ReNo != null and ReNo != ''">CAST(#{ReNo} AS INTEGER)</when><otherwise>NULL</otherwise></choose>
 	</delete>
 
 </mapper>
