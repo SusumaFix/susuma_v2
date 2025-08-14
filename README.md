@@ -1,4 +1,4 @@
-# 🚀 **수리 전문가 매칭 플랫폼 V2 (2025)** 
+# 🚀 **수리 전문가 매칭 플랫폼 V2.1 (2025)** 
 
 ![Image](https://github.com/user-attachments/assets/7a08badf-2063-4be1-838b-f08d4bff7ce2)  
 
@@ -12,7 +12,8 @@ V2는 최신 Jakarta EE 표준과 JSP를 기반으로 AJAX Pulling 기술을 활
 ---
 
 ## 🗓️ **개발 기간**  
-- 2025년 1월 8일 ~ 10일, 16일 (총 4일간 집중 개발)  
+- 2025년 1월 8일 ~ 10일, 16일 (총 4일간 집중 개발)
+- 2025년 8월 14일 V2.1 PostgreSQL Migration Worked
 
 | **한정우** |  
 | :------: |  
