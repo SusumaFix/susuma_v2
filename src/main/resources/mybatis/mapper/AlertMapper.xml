@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper 
-	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.susuma.alert.model.AlertMapper">
 
@@ -11,22 +11,21 @@
 		WHERE ME_NO = #{meNo}
 		ORDER BY SEND_TIME DESC
 	</select>
-	
+
 	<select id="getNewAlertCount" parameterType="String" resultType="int">
 		SELECT COUNT(*)
-		FROM ALERT 
+		FROM ALERT
 		WHERE ME_NO = #{meNo}
 	</select>
 
 	<insert id="insertAlert" parameterType="com.susuma.alert.model.AlertDTO">
 		INSERT INTO ALERT (AL_NO, ME_NO, REQ_NO, MESSAGE)
-		VALUES (alert_seq.NEXTVAL, #{meNo}, #{reqNo}, #{message})
+		VALUES (nextval('alert_seq'), #{meNo}, #{reqNo}, #{message})
 	</insert>
-	
+
 	<delete id="deleteAlert" parameterType="string">
 		DELETE FROM ALERT
-		WHERE
-		AL_NO = #{alNo}
+		WHERE AL_NO = #{alNo}
 	</delete>
 
 </mapper>

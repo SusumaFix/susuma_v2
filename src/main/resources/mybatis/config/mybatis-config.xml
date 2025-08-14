@@ -8,17 +8,17 @@
 	<settings>
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 		<setting name="logImpl" value="STDOUT_LOGGING" />
-        <setting name="jdbcTypeForNull" value="VARCHAR" />
+        <setting name="jdbcTypeForNull" value="NULL" />
 	</settings>
 
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC" />
 			<dataSource type="POOLED">
-				<property name="driver" value="oracle.jdbc.driver.OracleDriver" />
-				<property name="url" value="jdbc:oracle:thin:@localhost:1521/xe" />
-				<property name="username" value="SSM" />
-				<property name="password" value="SSM" />
+				<property name="driver" value="org.postgresql.Driver" />
+				<property name="url" value="" />
+				<property name="username" value="" />
+				<property name="password" value="" />
 			</dataSource>
 		</environment>
 	</environments>

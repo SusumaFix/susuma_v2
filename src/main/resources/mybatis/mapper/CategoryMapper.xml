@@ -8,7 +8,7 @@
 		FROM CATEGORY C
 		LEFT JOIN CATEGORY CR
 		ON CR.CA_NO = C.ROOT_NO
-		WHERE 1 =1 
+		WHERE 1 = 1
 		<if test="rootNo == null">
 			AND C.ROOT_NO IS NULL
 		</if>
